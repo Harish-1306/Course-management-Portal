@@ -1,0 +1,23 @@
+package com.example.Course.Management.Portal.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Course_Registry {
+
+    private String name;
+    @Id
+    private String emailid;
+    private String coursename;
+}

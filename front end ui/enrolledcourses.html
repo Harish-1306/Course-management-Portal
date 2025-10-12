@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrolled Courses</title>
+    <style>
+       
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: gainsboro;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color:aliceblue;
+}
+
+caption {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+th, td {
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+thead {
+    background-color: #00bcd4;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #e0f7fa;
+}
+
+    </style>
+</head>
+<body>
+   <table align="center" border="1">
+    <caption>Enrolled Courses</caption>
+    <thead style="background-color: aqua;">
+<tr>
+    <th width="50px">ID</th>
+    <th width="100px">Name</th>
+    <th width="200px">Email_id</th>
+    <th width="100px">Course_Name</th>
+</tr>
+    </thead>
+    <tbody id="tabledata">
+
+    </tbody>
+   </table>
+   <script>
+    
+    const tdata=document.getElementById( "tabledata");
+    window.onload=function(){showenrolled();};
+  function showenrolled(){
+    fetch("http://localhost:8080/enrolledcourses").then((response)=>response.json()).then((datas)=>{
+         tdata.innerHTML = "";
+         let idCounter = 1;
+       datas.forEach(courses=>{
+       
+        var row=`<tr>
+             <td>${idCounter++}</td>
+            <td>${courses.name}</td>
+             <td>${courses.emailid}</td> 
+             <td>${courses.coursename}</td>
+            
+            </tr>`;
+            tdata.innerHTML+=row;
+
+         });
+  })
+   .catch(err => console.error("Error fetching data:", err));
+}
+        
+        
+        
+       
+   </script>
+</body>
+</html>
