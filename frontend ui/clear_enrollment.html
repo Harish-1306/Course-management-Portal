@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Enrolledcourses</title>
+</head>
+<body>
+    <h2>Clear All Enrolled Courses</h2>
+    <form id="clearForm">
+        <button type="submit">Clear Enrollments</button>
+    </form>
+    <p id="result"></p>
+    <script>
+        const form = document.getElementById("clearForm");
+        const result = document.getElementById("result");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            fetch(`http://localhost:8080/clear_enrolled`, {
+                method: "DELETE"
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error("Could not clear enrollments.");
+                }
+            })
+            .then(data => {
+                result.textContent = data;
+            })
+            .catch(error => {
+                result.textContent = error.message;
+            });
+        }); 
+    </script>
+</body>
+</html>

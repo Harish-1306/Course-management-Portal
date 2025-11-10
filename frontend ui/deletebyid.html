@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove course</title>
+</head>
+<body>
+    <h2>Delete a Course by ID</h2>
+    <form id="deleteForm">
+        <label for="courseId">Course ID:</label><br>
+        <input type="text" id="courseId" name="courseId" required><br><br>
+        <button type="submit">Delete Course</button>
+    </form>
+    <p id="result"></p>
+    <script>
+        const form = document.getElementById("deleteForm");
+        const result = document.getElementById("result");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const courseId = document.getElementById("courseId").value.trim().toUpperCase()
+            fetch(`http://localhost:8080/delete/${courseId}`, {
+                method: "DELETE"
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error("Course not found or could not be deleted.");
+                }
+            })
+            .then(data => {
+                result.textContent = data;
+            })
+            .catch(error => {
+                result.textContent = error.message;
+            });
+        });
+</script>
+</body>
+</html>

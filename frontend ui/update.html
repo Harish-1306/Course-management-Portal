@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Course Details</title>
+</head>
+<body>
+  <form id="form">
+    <h2>Update your Courses</h2>
+
+    <label for="course_id">Course ID:</label><br>
+    <input type="text" id="course_id" name="course_id" required><br><br>
+
+    <label for="course_name">Course Name:</label><br>
+    <input type="text" id="course_name" name="course_name"><br><br>
+
+    <label for="trainer">Trainer:</label><br>
+    <input type="text" id="trainer" name="trainer"><br><br>
+
+    <label for="duration">Duration (weeks):</label><br>
+    <input type="number" id="duration" name="duration_in_weeks"><br><br>
+
+    <button type="submit">Update Course</button>
+  </form>
+
+  <h3>Response:</h3>
+  <h3 class="result"></h3>
+
+  <script>
+    const form = document.getElementById("form");
+    const responseMessage = document.querySelector(".result");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const course_id = document.getElementById("course_id").value.trim().toUpperCase();
+      const course_name = document.getElementById("course_name").value.trim().toUpperCase();
+      const trainer = document.getElementById("trainer").value.trim().toUpperCase();
+      const duration_in_weeks = parseInt(document.getElementById("duration").value);
+
+      
+      const updateData = {};
+      if (course_name) updateData.course_name = course_name;
+      if (trainer) updateData.trainer = trainer;
+      if (!isNaN(duration_in_weeks) && duration_in_weeks > 0)
+        updateData.duration_in_weeks = duration_in_weeks;
+
+      if (Object.keys(updateData).length === 0) {
+        responseMessage.textContent = "Please enter at least one field to update.";
+        responseMessage.style.color = "red";
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/update_course/${course_id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updateData)
+        });
+
+        const message = await response.text();
+        responseMessage.textContent = message;
+        responseMessage.style.color = response.ok ? "green" : "red";
+
+        form.reset();
+      } catch {
+        responseMessage.textContent = "Something went wrong. Please try again later.";
+        responseMessage.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>

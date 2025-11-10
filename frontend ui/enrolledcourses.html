@@ -56,7 +56,7 @@ tbody tr:hover {
     <caption>Enrolled Courses</caption>
     <thead style="background-color: aqua;">
 <tr>
-    <th width="50px">ID</th>
+    
     <th width="100px">Name</th>
     <th width="200px">Email_id</th>
     <th width="100px">Course_Name</th>
@@ -73,11 +73,10 @@ tbody tr:hover {
   function showenrolled(){
     fetch("http://localhost:8080/enrolledcourses").then((response)=>response.json()).then((datas)=>{
          tdata.innerHTML = "";
-         let idCounter = 1;
        datas.forEach(courses=>{
        
         var row=`<tr>
-             <td>${idCounter++}</td>
+             
             <td>${courses.name}</td>
              <td>${courses.emailid}</td> 
              <td>${courses.coursename}</td>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Enrollment</title>
+</head>
+<body>
+    <form id="form">
+         <h2>Update enrolled Courses</h2>
+        <label for ="email">Email_id:</label><br>
+        <input type="text" id="email_id" name="email" required><br><br>
+        <label for="name"> Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="coursename" >Course_name:</label><br>
+        <input type="text" id="Course_name" name="coursename" required><br><br>
+        
+        <button type="submit">Update Course</button>
+        </form>
+
+
+        <h3>Response:</h3>
+        <h3 id="result"></h3>
+ 
+  <script>
+    const form = document.getElementById("form");
+    const responseMessage = document.getElementById("result");
+    form.addEventListener("submit",async(event)=>{
+        event.preventDefault();
+     
+        const email_id = document.getElementById("email_id").value.trim().toUpperCase();
+        const name = document.getElementById("name").value.trim().toUpperCase();
+        const coursename = document.getElementById("Course_name").value.trim().toUpperCase();
+     
+        const updateData = {};
+        if (name) updateData.name = name;
+        if (coursename) updateData.coursename = coursename;
+     
+        if (Object.keys(updateData).length === 0) {
+            responseMessage.textContent = "Please enter at least one field to update.";
+            responseMessage.style.color = "red";
+            return;
+        }
+     
+        try {
+            const response = await fetch(`http://localhost:8080/update_enrolled/${email_id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updateData)
+            });
+     
+            const message = await response.text();
+            if (response.ok) {
+            responseMessage.style.color = "green";
+            responseMessage.textContent = message;
+            } else {
+            responseMessage.style.color = "red";
+            responseMessage.textContent = message;
+            }
+    }
+        catch  {
+            responseMessage.style.color = "red";
+            responseMessage.textContent = "Server error. Please try again later.";
+        }
+    });
+
+
+  </script>
+    </form>
+</body>
+</html>

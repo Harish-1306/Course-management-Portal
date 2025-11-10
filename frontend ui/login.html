@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+  
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #002b36, #001f29);
+  font-family: "Poppins", sans-serif;
+}
+
+.login-container {
+  width: 350px;
+  padding: 40px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+
+h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.input-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-box i {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #ffffffa8;
+  font-size: 18px;
+}
+
+.input-box input {
+  width: 70%;
+  padding: 12px 45px;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.input-box input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background: #fff;
+  color: #001f29;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #b2bec3;
+}
+
+
+#result {
+  margin-top: 15px;
+  color: #ff6b6b;
+  font-size: 14px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <form id="form">
+      <h2>USER LOGIN</h2>
+
+      <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="password" placeholder="Password" required>
+      </div>
+
+      <input type="submit" value="LOGIN" class="btn">
+    </form>
+    <h3 id="result"></h3>
+  </div>
+
+  <script>
+    const result = document.getElementById("result");
+    const form = document.getElementById("form");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:8080/validate_user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        if (data === true) {
+          window.location.href = "Dashboard.html";
+        } else {
+          result.textContent = "Invalid user credentials";
+        }
+      } catch (error) {
+        result.textContent = "Server error, try again later";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Courses</title>
+</head>
+<body>
+  <h2>Add a New Course</h2>
+
+  <form id="addCourseForm">
+    <label for="course_id">Course ID:</label><br>
+    <input type="text" id="course_id" name="course_id" required><br><br>
+
+    <label for="course_name">Course Name:</label><br>
+    <input type="text" id="course_name" name="course_name" required><br><br>
+
+    <label for="trainer">Trainer:</label><br>
+    <input type="text" id="trainer" name="trainer" required><br><br>
+
+    <label for="duration">Duration (in weeks):</label><br>
+    <input type="number" id="duration" name="duration_in_weeks" required><br><br>
+
+    <button type="submit">Add Course</button>
+  </form>
+
+  <h3 id="response" style="color: blue; margin-top: 20px;"></h3>
+
+  <script>
+    const form = document.getElementById("addCourseForm");
+    const responseMsg = document.getElementById("response");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const course_id = document.getElementById("course_id").value.toUpperCase();
+      const course_name = document.getElementById("course_name").value.toUpperCase();
+      const trainer = document.getElementById("trainer").value.toUpperCase();
+      const duration_in_weeks = parseInt(document.getElementById("duration").value);
+
+      try {
+        const response = await fetch("http://localhost:8080/add_course_details", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ course_id, course_name, trainer, duration_in_weeks })
+        });
+
+        const message = await response.text();
+        responseMsg.style.color = response.ok ? "green" : "red";
+        responseMsg.textContent = message;
+
+        if (response.ok) form.reset();
+
+      } catch  {
+        responseMsg.style.color = "red";
+        responseMsg.textContent = "Server error. Please try again later.";
+      }
+    });
+  </script>
+</body>
+</html>

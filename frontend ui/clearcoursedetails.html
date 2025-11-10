@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear course details</title>
+</head>
+<body>
+    <h2>click on the below button to reset courses</h2>
+   
+        <button id="clearbtn" type="button"> all courses</button>
+    <p id="clearall"></p>
+    <script>
+        const btn=document.getElementById("clearbtn");
+        const result=document.getElementById("clearall");
+     btn.addEventListener("click",function(){
+        fetch("http://localhost:8080/delete_all",{ method: "DELETE" }).then((message)=>message.text()).then((data)=>result.textContent=data).catch((error) => {
+          console.error("Error:", error);
+          result.textContent = "Failed to clear courses!,the table may be already empty";
+        });
+     })
+        
+    </script>
+</body>
+</html>

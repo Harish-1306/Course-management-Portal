@@ -80,7 +80,7 @@
     <script>
         
         window.addEventListener("DOMContentLoaded", function () {
-            fetch("http://localhost:8080/viewcoursedetails")
+            fetch("http://localhost:8080/view_course_details")
                 .then(response => response.json())
                 .then(data => {
                     const tbody = document.querySelector("#courseTable tbody");
